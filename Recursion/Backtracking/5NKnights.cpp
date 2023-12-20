@@ -51,7 +51,7 @@ bool isSafe(vector<vector<bool>> board, int row, int col)
 
 void knights(vector<vector<bool>> board, int row, int col, int target)
 {
-    //base when row goes out of size, then we got one of the solutions
+    // target 0
     if(target == 0)
     {
         display(board);
