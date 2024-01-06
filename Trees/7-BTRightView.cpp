@@ -1,7 +1,8 @@
-// LC- 102 https://leetcode.com/problems/binary-tree-level-order-traversal/
-
 using namespace std;
 #include <bits/stdc++.h>
+
+// LC- 199 https://leetcode.com/problems/binary-tree-right-side-view/submissions/1138277806/
+
 
 // * Definition for a binary tree node.
  struct TreeNode {
@@ -14,38 +15,34 @@ using namespace std;
  };
 class Solution {
 public:
-    vector<vector<int>> levelOrder(TreeNode* root) {
-
-        vector<vector<int>> ans;
-        if(root == NULL)
-        return  ans;
-
+        vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        if(root==NULL)
+        return ans;
         queue<TreeNode*> q;
         q.push(root);
-        ans.push_back({root->val});
-        
+        ans.push_back(root->val);
         while(!q.empty())
         {
-            vector<int> level;
+            int rightmost = -101;
             int qsize = q.size();
-            for(int i = 0; i < qsize; i++)
+            for(int i=0;i<qsize;i++)
             {
-                 TreeNode* item = q.front();
-            q.pop();
-            
-            if(item->left)
-            {
-                q.push(item->left);
-                level.push_back(item->left->val);
+                TreeNode* node = q.front();
+                q.pop();
+                if(node->left)
+                {
+                    q.push(node->left);
+                    rightmost = node->left->val;
+                }
+                if(node->right)
+                {
+                    q.push(node->right);
+                    rightmost = node->right->val;
+                }
             }
-            if(item->right)
-            {
-                q.push(item->right);
-                level.push_back(item->right->val);
-            }
-            }
-            if(level.size())
-            ans.push_back(level);
+            if(rightmost!=-101)
+            ans.push_back(rightmost);
         }
         return ans;
     }
@@ -61,12 +58,11 @@ int main()
     TreeNode* root = new TreeNode(3,l1,r1);
 
     Solution s = Solution();
-    vector<vector<int>> ans = s.levelOrder(root);
+    vector<int> ans = s.rightSideView(root);
     for(auto l: ans)
     {
-        for(auto i:l)
-        cout<< i << " ";
-        cout << endl;
+        cout<< l << " ";
     }
     return 0;
+
 }

@@ -1,7 +1,8 @@
-// LC- 102 https://leetcode.com/problems/binary-tree-level-order-traversal/
-
 using namespace std;
 #include <bits/stdc++.h>
+
+// LC- 637 https://leetcode.com/problems/average-of-levels-in-binary-tree/
+
 
 // * Definition for a binary tree node.
  struct TreeNode {
@@ -12,45 +13,41 @@ using namespace std;
      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  };
+
+// almost copy of bfs
 class Solution {
 public:
-    vector<vector<int>> levelOrder(TreeNode* root) {
-
-        vector<vector<int>> ans;
+    vector<double> averageOfLevels(TreeNode* root) {
+        vector<double> ans;
         if(root == NULL)
         return  ans;
 
         queue<TreeNode*> q;
         q.push(root);
-        ans.push_back({root->val});
         
         while(!q.empty())
         {
-            vector<int> level;
+            double sum = 0;
             int qsize = q.size();
             for(int i = 0; i < qsize; i++)
             {
-                 TreeNode* item = q.front();
-            q.pop();
-            
-            if(item->left)
-            {
-                q.push(item->left);
-                level.push_back(item->left->val);
+                TreeNode* item = q.front();
+                q.pop();
+                sum += item->val;
+                if(item->left)
+                {
+                    q.push(item->left);
+                }
+                if(item->right)
+                {
+                    q.push(item->right);
+                }
             }
-            if(item->right)
-            {
-                q.push(item->right);
-                level.push_back(item->right->val);
-            }
-            }
-            if(level.size())
-            ans.push_back(level);
+            ans.push_back(sum/qsize);
         }
         return ans;
     }
 };
-
 
 int main()
 {
@@ -61,12 +58,10 @@ int main()
     TreeNode* root = new TreeNode(3,l1,r1);
 
     Solution s = Solution();
-    vector<vector<int>> ans = s.levelOrder(root);
+    vector<double> ans = s.averageOfLevels(root);
     for(auto l: ans)
     {
-        for(auto i:l)
-        cout<< i << " ";
-        cout << endl;
+        cout<< l << " ";
     }
     return 0;
 }

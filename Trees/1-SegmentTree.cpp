@@ -11,14 +11,32 @@ struct TreeNode {
       TreeNode() : val(0), left(nullptr), right(nullptr) {}
       TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
       TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-      TreeNode(int s, int e) : startInterval(s), endInterval(e) {}
+      TreeNode(int v, int s, int e) : val(v), startInterval(s), endInterval(e) {}
    };
 
-class Solution {
+class SegmentTree {
 public:
+    TreeNode* root;
+    SegmentTree(int arr[])
+    {
+        int size = sizeof(arr)/sizeof(arr[0]);
+        this->root = constructST(arr, 0, size-1);
+    }
 
-    vector<int> inorderTraversal(TreeNode* root) {
-        
+    TreeNode* constructST(int arr[], int start, int end)
+    {
+        if(start==end)
+        {
+            return new TreeNode(arr[start], start, end);
+        }
+
+        TreeNode* curr = new TreeNode();
+        int mid = (start + end)/2;
+        curr -> left = constructST(arr, start, mid);
+        curr -> right = constructST(arr, mid+1, end);
+        curr->val = curr->left->val + curr->right->val;
+
+        return curr;
     }
 };
 
@@ -26,6 +44,5 @@ int main()
 {
     int arr[] = {3,8,6,7,-2,-8,4,9};
 
-    TreeNode* node = new TreeNode(0,7);
     return 0;
 }
